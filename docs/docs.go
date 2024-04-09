@@ -266,7 +266,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "0.0.1",
 	Host:             "localhost:8080",
-	BasePath:         "/api/v1",
+	BasePath:         "/v1",
 	Schemes:          []string{},
 	Title:            "Cars Go API",
 	Description:      "This API provides endpoints for managing cars.",

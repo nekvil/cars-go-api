@@ -18,7 +18,7 @@ import (
 // @description This API provides endpoints for managing cars.
 
 // @host localhost:8080
-// @BasePath /api/v1
+// @BasePath /v1
 func main() {
 	utils.InitLogger()
 
