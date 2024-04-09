@@ -1,0 +1,170 @@
+basePath: /api/v1
+definitions:
+  handler.addCarRequestBody:
+    properties:
+      regNums:
+        items:
+          type: string
+        type: array
+    type: object
+  handler.errorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handler.successResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  model.Car:
+    properties:
+      mark:
+        type: string
+      model:
+        type: string
+      owner:
+        $ref: '#/definitions/model.People'
+      regNum:
+        type: string
+      year:
+        type: integer
+    type: object
+  model.People:
+    properties:
+      name:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This API provides endpoints for managing cars.
+  title: Cars Go API
+  version: 0.0.1
+paths:
+  /cars:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all cars optionally filtered and paginated.
+      operationId: get-all-cars
+      parameters:
+      - description: Optional filter to apply
+        in: query
+        name: filter
+        type: string
+      - description: Optional page number for pagination
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response containing the list of cars
+          schema:
+            $ref: '#/definitions/handler.successResponse'
+        "400":
+          description: Invalid page number format
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Retrieve all cars
+    post:
+      consumes:
+      - application/json
+      description: Adds multiple cars using their registration numbers.
+      operationId: add-cars
+      parameters:
+      - description: Array of car registration numbers
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/handler.addCarRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating the addition of cars
+          schema:
+            $ref: '#/definitions/handler.successResponse'
+        "400":
+          description: Invalid JSON payload
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Failed to add cars or internal server error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Add multiple cars
+  /cars/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a car by its ID.
+      operationId: delete-car
+      parameters:
+      - description: Car ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating the deletion
+          schema:
+            $ref: '#/definitions/handler.successResponse'
+        "400":
+          description: Invalid car ID format
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Delete a car
+    put:
+      consumes:
+      - application/json
+      description: Updates a car by its ID.
+      operationId: update-car
+      parameters:
+      - description: Car ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New car data
+        in: body
+        name: requestBody
+        required: true
+        schema:
+          $ref: '#/definitions/model.Car'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful response indicating the update
+          schema:
+            $ref: '#/definitions/handler.successResponse'
+        "400":
+          description: Invalid car ID format or JSON payload
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Update a car
+swagger: "2.0"
